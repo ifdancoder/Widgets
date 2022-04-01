@@ -79,6 +79,7 @@ public:
 	void Fire();
 	void FireSpecial();
 	int GetAmmoNow();
+	int GetMaxAmmo();
 	void Shot();
 	bool IsReadyToFire();
 	UArrowComponent* GetProjectileSpawnPoint();

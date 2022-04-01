@@ -11,6 +11,7 @@
 #include "Cannon.h"
 #include "GameStructs.h"
 #include "Components/BoxComponent.h"
+#include "TanksHUD.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -32,6 +33,24 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 
 	Cannons[CurrentCannonIndex]->ScoreOnKill.AddDynamic(this, &ATankPawn::AddScoreForKill);
+
+	bIsPlayer = GetController() == GetWorld()->GetFirstPlayerController();
+
+	if (bIsPlayer)
+	{
+		TanksHud = Cast<ATanksHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	}
+}
+
+
+void ATankPawn::EndPlay(EEndPlayReason::Type EndPlayReason)
+{
+	if (bIsPlayer)
+	{
+		TanksHud->ShowWindow(EWidgetID::GameOver);
+	}
+
+	Super::EndPlay(EndPlayReason);
 }
 
 // Called every frame
@@ -116,11 +135,6 @@ void ATankPawn::ChangingCannon()
 		UE_LOG(LogTanks, Verbose, TEXT("Cannon %s (%d): Ammo: %d"), *(Cannons[i]->GetName()), i + 1, Cannons[i]->GetAmmoNow());
 		UE_LOG(LogTanks, Verbose, TEXT(""));
 	}*/
-}
-
-class ACannon* ATankPawn::GetCannon() const
-{
-	return Cannons[CurrentCannonIndex];
 }
 
 FVector ATankPawn::GetTurretForwardVector()

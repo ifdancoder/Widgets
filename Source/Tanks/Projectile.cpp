@@ -130,13 +130,13 @@ void AProjectile::OnMeshHit(class UPrimitiveComponent* OverlappedComp, class AAc
 
 		if (bSweepResult)
 		{
-			for (FHitResult HitResult : AttackHit)
+			for (auto HResult : AttackHit)
 			{
-				AActor* HitActor = HitResult.GetActor();
+				AActor* HitActor = HResult.GetActor();
 				if (!HitActor)
 					continue;
 
-				DamageDealing(OtherActor, OtherComp, HitResult, (HitActor->GetActorLocation() - GetActorLocation()) * ExplosionImpulse);
+				DamageDealing(OtherActor, OtherComp, HResult, (HitActor->GetActorLocation() - GetActorLocation()) * ExplosionImpulse);
 			}
 		}
 	}

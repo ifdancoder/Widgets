@@ -12,6 +12,7 @@
 #include <Particles/ParticleSystemComponent.h>
 #include <Components/AudioComponent.h>
 #include "ActorPoolSubsystem.h"
+#include "HealthBar.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -43,6 +44,9 @@ ABasePawn::ABasePawn()
 
 	LootSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn point"));
 	LootSpawnPoint->SetupAttachment(BaseMesh);
+
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HealthBar->SetupAttachment(BaseMesh);
 }
 
 // Called when the game starts or when spawned
@@ -58,6 +62,19 @@ void ABasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (HealthBar)
+	{
+		if (GetCannon())
+		{
+			Cast<UHealthBar>(HealthBar->GetWidget())->SetAmmo(((GetCannon()->GetAmmoNow()) * 1.f) / MaxAmmo);
+		}
+		Cast<UHealthBar>(HealthBar->GetWidget())->SetHealth(HealthComponent->GetHealthState());
+	}
+}
+
+class ACannon* ABasePawn::GetCannon() const
+{
+	return Cannons[CurrentCannonIndex];
 }
 
 void ABasePawn::OnHealthChanged_Implementation(float DamageAmount)

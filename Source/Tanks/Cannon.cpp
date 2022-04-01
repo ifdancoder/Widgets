@@ -77,6 +77,12 @@ int ACannon::GetAmmoNow()
 	return AmmoNow;
 }
 
+
+int ACannon::GetMaxAmmo()
+{
+	return Ammo;
+}
+
 void ACannon::Shot()
 {
 
