@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "AmmoBox.h"
+#include <Components/WidgetComponent.h>
+#include <Components/ArrowComponent.h>
 #include "BasePawn.generated.h"
 
 UCLASS()
@@ -22,6 +24,9 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	class UWidgetComponent* HealthBar;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UStaticMeshComponent* BaseMesh;
@@ -79,6 +84,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class UAudioComponent* DestroyingAudioEffect;
 
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -88,6 +94,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Turret")
 	void Fire();
+
+	UFUNCTION(BlueprintPure, Category = "Turret")
+	class ACannon* GetCannon() const;
 
 	UArrowComponent* GetCannonSpawnPoint();
 

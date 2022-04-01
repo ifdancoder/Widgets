@@ -7,6 +7,7 @@
 #include "Damageable.h"
 #include "HealthComponent.h"
 #include "BasePawn.h"
+#include "TanksHUD.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -49,6 +50,7 @@ protected:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
 public:
 	// Called every frame
@@ -70,9 +72,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Turret")
 	void ChangingCannon();
-
-	UFUNCTION(BlueprintPure, Category = "Turret")
-	class ACannon* GetCannon() const;
 
 	UFUNCTION(BlueprintPure, Category = "Turret")
 	FVector GetTurretForwardVector();
@@ -107,6 +106,7 @@ public:
 
 private:
 
+	bool bIsPlayer = false;
 	float CurrentMoveForwardAxis = 0.f;
 	float TargetMoveForwardAxis = 0.f;
 	float CurrentRotateRightAxis = 0.f;
@@ -115,4 +115,5 @@ private:
 	float CurrentScore = 0.f;
 
 	FVector TurretTargetPosition;
+	ATanksHUD* TanksHud;
 };
