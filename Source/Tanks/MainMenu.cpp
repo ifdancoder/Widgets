@@ -5,6 +5,32 @@
 #include <Kismet/GameplayStatics.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include "TanksHUD.h"
+#include "SRadioButtons.h"
+#include "MyCoreStyle.h"
+#include "RadButWidgetStyle.h"
+#include <Components/ButtonSlot.h>
+//#include "RB.h"
+
+void UMainMenu::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+
+	if (RadioButtons)
+	{
+		RadioButtons->WidgetStyle = MyCoreStyle::Get().GetWidgetStyle<FRadButStyle>("RadioButtonsStyle");
+	}
+
+	if (NewGameButton)
+	{
+		NewGameButton->ColorAndOpacity = MyCoreStyle::Get().GetColor("Red");
+	}
+
+	if (Frog)
+	{
+		Frog->SetBrush(*MyCoreStyle::Get().GetBrush("Frog"));
+		Cast<UButtonSlot>(Frog->Slot)->SetPadding(MyCoreStyle::Get().GetMargin("DefaultPadding"));
+	}
+}
 
 void UMainMenu::NativeConstruct()
 {
@@ -24,7 +50,6 @@ void UMainMenu::NativeConstruct()
 	{
 		OptionsButton->OnClicked.AddDynamic(this, &UMainMenu::OnSettingsClicked);
 	}
-
 
 	HUD = Cast<ATanksHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 }

@@ -6,6 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "TanksHUD.h"
+#include <Components/NativeWidgetHost.h>
+#include "RadioButtons.h"
+#include <Components/Image.h>
 #include "MainMenu.generated.h"
 
 /**
@@ -17,9 +20,17 @@ class TANKS_API UMainMenu : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual void NativePreConstruct() override;
+
 	virtual void NativeConstruct() override;
 
 protected:
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
+	class UImage* Frog;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
+	class URadioButtons* RadioButtons;
+
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	class UButton* NewGameButton;
 
